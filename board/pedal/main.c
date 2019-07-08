@@ -27,7 +27,6 @@
   }
 #endif
 
-#define ENTER_BOOTLOADER_MAGIC 0xdeadbeef
 uint32_t enter_bootloader_mode;
 
 void __initialize_hardware_early(void) {
