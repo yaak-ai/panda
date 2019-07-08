@@ -11,6 +11,8 @@ void dac_set(int channel, uint32_t value) {
     DAC->DHR12R1 = value;
   } else if (channel == 1) {
     DAC->DHR12R2 = value;
+  } else {
+    puts("DAC not set: channel not 0 or 1\n");
   }
 }
 
