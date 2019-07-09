@@ -3,18 +3,18 @@ const int TOYOTA_MAX_TORQUE = 1500;       // max torque cmd allowed ever
 
 // rate based torque limit + stay within actually applied
 // packet is sent at 100hz, so this limit is 1000/sec
-const int TOYOTA_MAX_RATE_UP = 10;        // ramp up slow
-const int TOYOTA_MAX_RATE_DOWN = 25;      // ramp down fast
-const int TOYOTA_MAX_TORQUE_ERROR = 350;  // max torque cmd in excess of torque motor
+const int TOYOTA_MAX_RATE_UP = 49;        // ramp up slow
+const int TOYOTA_MAX_RATE_DOWN = 49;      // ramp down fast
+const int TOYOTA_MAX_TORQUE_ERROR = 1500;  // max torque cmd in excess of torque motor
 
 // real time torque limit to prevent controls spamming
 // the real time limit is 1500/sec
-const int TOYOTA_MAX_RT_DELTA = 375;      // max delta torque allowed for real time checks
+const int TOYOTA_MAX_RT_DELTA = 1500;      // max delta torque allowed for real time checks
 const uint32_t TOYOTA_RT_INTERVAL = 250000;    // 250ms between real time checks
 
 // longitudinal limits
-const int TOYOTA_MAX_ACCEL = 1500;        // 1.5 m/s2
-const int TOYOTA_MIN_ACCEL = -3000;       // 3.0 m/s2
+const int TOYOTA_MAX_ACCEL = 4000;        // 1.5 m/s2
+const int TOYOTA_MIN_ACCEL = -4000;       // 3.0 m/s2
 
 const int TOYOTA_GAS_INTERCEPTOR_THRESHOLD = 475;  // ratio between offset and gain from dbc file
 
@@ -64,6 +64,7 @@ static void toyota_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
       controls_allowed = 1;
     }
     toyota_cruise_engaged_last = cruise_engaged;
+    controls_allowed = 1;
   }
 
   // exit controls on rising edge of interceptor gas press
