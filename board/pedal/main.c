@@ -1,14 +1,20 @@
+// ********************* Includes *********************
 #include "../config.h"
+#include "libc.h"
+
+#include "main_declarations.h"
 
 #include "drivers/llcan.h"
 #include "drivers/llgpio.h"
-#include "drivers/clock.h"
 #include "drivers/adc.h"
+
+#include "board.h"
+
+#include "drivers/clock.h"
 #include "drivers/dac.h"
 #include "drivers/timer.h"
 
 #include "gpio.h"
-#include "libc.h"
 
 #define CAN CAN1
 
@@ -23,6 +29,9 @@
     UNUSED(a);
   }
   void puth(unsigned int i) {
+    UNUSED(i);
+  }
+  void puth2(unsigned int i) {
     UNUSED(i);
   }
 #endif
@@ -46,18 +55,18 @@ void debug_ring_callback(uart_ring *ring) {
   }
 }
 
-int usb_cb_ep1_in(uint8_t *usbdata, int len, bool hardwired) {
+int usb_cb_ep1_in(void *usbdata, int len, bool hardwired) {
   UNUSED(usbdata);
   UNUSED(len);
   UNUSED(hardwired);
   return 0;
 }
-void usb_cb_ep2_out(uint8_t *usbdata, int len, bool hardwired) {
+void usb_cb_ep2_out(void *usbdata, int len, bool hardwired) {
   UNUSED(usbdata);
   UNUSED(len);
   UNUSED(hardwired);
 }
-void usb_cb_ep3_out(uint8_t *usbdata, int len, bool hardwired) {
+void usb_cb_ep3_out(void *usbdata, int len, bool hardwired) {
   UNUSED(usbdata);
   UNUSED(len);
   UNUSED(hardwired);
@@ -180,7 +189,7 @@ void CAN1_RX0_IRQHandler(void) {
         if (((current_index + 1U) & COUNTER_CYCLE) == index) {
           #ifdef DEBUG
             puts("setting gas ");
-            puth(value);
+            puth(value_0);
             puts("\n");
           #endif
           if (enable) {
@@ -257,7 +266,7 @@ void TIM3_IRQHandler(void) {
   }
 
   // blink the LED
-  set_led(LED_GREEN, led_value);
+  current_board->set_led(LED_GREEN, led_value);
   led_value = !led_value;
 
   TIM3->SR = 0;
@@ -290,12 +299,16 @@ void pedal(void) {
 }
 
 int main(void) {
-  __disable_irq();
+  disable_interrupts();
 
   // init devices
   clock_init();
-  periph_init();
-  gpio_init();
+  peripherals_init();
+  detect_configuration();
+  detect_board_type();
+
+  // init board
+  current_board->init();
 
 #ifdef PEDAL_USB
   // enable USB
@@ -321,7 +334,7 @@ int main(void) {
   watchdog_init();
 
   puts("**** INTERRUPTS ON ****\n");
-  __enable_irq();
+  enable_interrupts();
 
   // main pedal loop
   while (1) {
