@@ -15,4 +15,4 @@ $SUDO apt-get install -y libtool
 $SUDO apt-get install -y libtool-bin
 git clone --recursive https://github.com/pfalcon/esp-open-sdk.git
 cd esp-open-sdk
-make CT_ALLOW_BUILD_AS_ROOT=y
+CT_ALLOW_BUILD_AS_ROOT_SURE=1 make
