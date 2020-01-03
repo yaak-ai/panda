@@ -1,3 +1,3 @@
 #!/bin/bash
-sudo apt-get install gcc-arm-none-eabi python-pip
-sudo pip install libusb1 pycrypto requests
+apt-get install -y gcc-arm-none-eabi python-pip
+pip3 install libusb1 pycrypto requests
