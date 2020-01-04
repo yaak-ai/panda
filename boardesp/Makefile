@@ -1,11 +1,14 @@
+
 SDK_BASE_PATH=/opt/deps/
+ESP8266_SDK_VERSION=ESP8266_NONOS_SDK-2.1.0-18-g61248df
+
 PATH := $(SDK_BASE_PATH)esp-open-sdk/xtensa-lx106-elf/bin:$(PATH)
 CC = $(SDK_BASE_PATH)esp-open-sdk/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc
-CFLAGS = -Iinclude/ -I. -I../ -mlongcalls -I$(SDK_BASE_PATH)esp-open-sdk/ESP8266_NONOS_SDK_V1.5.4_16_05_20/driver_lib/include -std=c99 -DICACHE_FLASH
+CFLAGS = -Iinclude/ -I. -I../ -mlongcalls -I$(SDK_BASE_PATH)esp-open-sdk/$(ESP8266_SDK_VERSION)/driver_lib/include -std=c99 -DICACHE_FLASH
 LDLIBS = -nostdlib -Wl,--start-group -lmain -lnet80211 -lwpa -llwip -lpp -lphy -Wl,--end-group -lgcc -ldriver -Wl,--gc-sections
 LDFLAGS = -Teagle.app.v6.ld
 OBJCP = $(SDK_BASE_PATH)esp-open-sdk/xtensa-lx106-elf/bin/xtensa-lx106-elf-objcopy
-SDK_BASE = $(SDK_BASE_PATH)esp-open-sdk/ESP8266_NONOS_SDK_V1.5.4_16_05_20
+SDK_BASE = $(SDK_BASE_PATH)esp-open-sdk/$(ESP8266_SDK_VERSION)
 
 ifeq ($(RELEASE),1)
   CERT = ../../pandaextra/certs/releaseesp
@@ -51,7 +54,7 @@ user1.bin: obj/proxy.o obj/elm327.o obj/webserver.o obj/sha.o obj/rsa.o
 	$(OBJCP) --only-section .data -O binary a.out eagle.app.v6.data.bin
 	$(OBJCP) --only-section .rodata -O binary a.out eagle.app.v6.rodata.bin
 	$(OBJCP) --only-section .irom0.text -O binary a.out eagle.app.v6.irom0text.bin
-	COMPILE=gcc python2 ./esp-open-sdk/ESP8266_NONOS_SDK_V1.5.4_16_05_20/tools/gen_appbin.py a.out 2 0 32 4 0
+	COMPILE=gcc python2 $(SDK_BASE_PATH)/esp-open-sdk/$(ESP8266_SDK_VERSION)/tools/gen_appbin.py a.out 2 0 32 4 0
 	rm -f eagle.app.v6.*.bin
 	mv eagle.app.flash.bin $@
 	../crypto/sign.py $@ $@ $(CERT)
@@ -62,7 +65,7 @@ user2.bin: obj/proxy.o obj/elm327.o obj/webserver.o obj/sha.o obj/rsa.o
 	$(OBJCP) --only-section .data -O binary a.out eagle.app.v6.data.bin
 	$(OBJCP) --only-section .rodata -O binary a.out eagle.app.v6.rodata.bin
 	$(OBJCP) --only-section .irom0.text -O binary a.out eagle.app.v6.irom0text.bin
-	COMPILE=gcc python2 ./esp-open-sdk/ESP8266_NONOS_SDK_V1.5.4_16_05_20/tools/gen_appbin.py a.out 2 0 32 4 0
+	COMPILE=gcc python2 $(SDK_BASE_PATH)/esp-open-sdk/$(ESP8266_SDK_VERSION)/tools/gen_appbin.py a.out 2 0 32 4 0
 	rm -f eagle.app.v6.*.bin
 	mv eagle.app.flash.bin $@
 	../crypto/sign.py $@ $@ $(CERT)
