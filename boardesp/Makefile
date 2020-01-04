@@ -1,4 +1,4 @@
-SDK_BASE_PATH=/opt/orion/deps/
+SDK_BASE_PATH=/opt/deps/
 PATH := $(SDK_BASE_PATH)esp-open-sdk/xtensa-lx106-elf/bin:$(PATH)
 CC = $(SDK_BASE_PATH)esp-open-sdk/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc
 CFLAGS = -Iinclude/ -I. -I../ -mlongcalls -I$(SDK_BASE_PATH)esp-open-sdk/ESP8266_NONOS_SDK_V1.5.4_16_05_20/driver_lib/include -std=c99 -DICACHE_FLASH
