@@ -1,6 +1,6 @@
 
 SDK_BASE_PATH=/opt/deps/
-ESP8266_SDK_VERSION=ESP8266_NONOS_SDK-2.1.0-18-g61248df
+ESP8266_SDK_VERSION=ESP8266_NONOS_SDK_V1.5.4_16_05_20
 
 PATH := $(SDK_BASE_PATH)esp-open-sdk/xtensa-lx106-elf/bin:$(PATH)
 CC = $(SDK_BASE_PATH)esp-open-sdk/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc
