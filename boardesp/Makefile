@@ -1,10 +1,11 @@
-PATH := esp-open-sdk/xtensa-lx106-elf/bin:$(PATH)
-CC = esp-open-sdk/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc
-CFLAGS = -Iinclude/ -I. -I../ -mlongcalls -Iesp-open-sdk/ESP8266_NONOS_SDK_V1.5.4_16_05_20/driver_lib/include -std=c99 -DICACHE_FLASH
+SDK_BASE_PATH=/opt/orion/deps/
+PATH := $(SDK_BASE_PATH)esp-open-sdk/xtensa-lx106-elf/bin:$(PATH)
+CC = $(SDK_BASE_PATH)esp-open-sdk/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc
+CFLAGS = -Iinclude/ -I. -I../ -mlongcalls -I$(SDK_BASE_PATH)esp-open-sdk/ESP8266_NONOS_SDK_V1.5.4_16_05_20/driver_lib/include -std=c99 -DICACHE_FLASH
 LDLIBS = -nostdlib -Wl,--start-group -lmain -lnet80211 -lwpa -llwip -lpp -lphy -Wl,--end-group -lgcc -ldriver -Wl,--gc-sections
 LDFLAGS = -Teagle.app.v6.ld
-OBJCP = esp-open-sdk/xtensa-lx106-elf/bin/xtensa-lx106-elf-objcopy
-SDK_BASE = esp-open-sdk/ESP8266_NONOS_SDK_V1.5.4_16_05_20
+OBJCP = $(SDK_BASE_PATH)esp-open-sdk/xtensa-lx106-elf/bin/xtensa-lx106-elf-objcopy
+SDK_BASE = $(SDK_BASE_PATH)esp-open-sdk/ESP8266_NONOS_SDK_V1.5.4_16_05_20
 
 ifeq ($(RELEASE),1)
   CERT = ../../pandaextra/certs/releaseesp
